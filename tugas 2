@@ -1,0 +1,117 @@
+
+
+Praktikum 5
+Single Linked List (1)
+D. Percobaan
+1. Menyisipkan sebagai simpul ujung(awal) dari linked list
+
+
+#include <iostream>
+#include <cstring>
+
+struct Node {
+  char nama[25];
+  int nrp;
+  Node* next;
+};
+
+void insert_front(Node** head, const char name[], int nrp) {
+  Node* new_node = new Node;
+  strcpy(new_node->nama, name);
+  new_node->nrp = nrp;
+  new_node->next = *head;
+  *head = new_node;
+}
+
+2. Membaca atau menampilkan.
+
+void print_list(Node* head) {
+  Node* current = head;
+  while (current != nullptr) {
+    std::cout << current->nama << " " << current->nrp << std::endl;
+    current = current->next;
+  }
+}
+
+3. Mencari sebuah simpul tertentu
+
+Node* search(Node* head, const char name[]) {
+  Node* current = head;
+  while (current != nullptr && strcmp(current->nama, name) != 0) {
+    current = current->next;
+  }
+  return current;
+}
+
+4. Menyisipkan sebagai simpul terakhir
+
+void insert_back(Node** head, const char name[], int nrp) {
+  Node* new_node = new Node;
+  strcpy(new_node->nama, name);
+  new_node->nrp = nrp;
+  new_node->next = nullptr;
+
+  if (*head == nullptr) {
+    *head = new_node;
+    return;
+  }
+
+  Node* last = *head;
+  while (last->next != nullptr) {
+    last = last->next;
+  }
+  last->next = new_node;
+}
+
+5. Gabungkan semua operasi di atas dalam sebuah Menu Pilihan
+
+int main() {
+  Node* head = nullptr;
+  int choice;
+  char name[25];
+  int nrp;
+
+  do {
+    std::cout << "\nMenu Pilihan:\n";
+    std::cout << "1. Sisip Awal\n";
+    std::cout << "2. Tampilkan\n";
+    std::cout << "3. Cari\n";
+    std::cout << "4. Sisip Akhir\n";
+    std::cout << "5. Keluar\n";
+    std::cout << "Pilihan: ";
+    std::cin >> choice;
+
+    switch (choice) {
+      case 1:
+        std::cout << "Masukkan nama: ";
+        std::cin >> name;
+        std::cout << "Masukkan nrp: ";
+        std::cin >> nrp;
+        insert_front(&head, name, nrp);
+        break;
+      case 2:
+        print_list(head);
+        break;
+      case 3:
+        std::cout << "Masukkan nama yang dicari: ";
+        std::cin >> name;
+        Node* result = search(head, name);
+        if (result == nullptr) {
+          std::cout << "Data tidak ditemukan!\n";
+        } else {
+          std::cout << "Data ditemukan: " << result->nama << " " << result->nrp << std::endl;
+        }
+        break;
+      case 4:
+        std::cout << "Masukkan nama: ";
+        std::cin >> name;
+        std::cout << "Masukkan nrp: ";
+        std::cin >> nrp;
+        insert_back(&head, name, nrp);
+        break;
+    }
+  } while (choice != 5);
+
+  return 0;
+}
+
